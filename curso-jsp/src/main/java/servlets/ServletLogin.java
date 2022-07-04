@@ -40,8 +40,25 @@ public class ServletLogin extends HttpServlet {
 			ModelLogin modelLogin = new ModelLogin();
 			modelLogin.setLogin(login);
 			modelLogin.setSenha(senha);
+
+			/*redirecionando para a tela depois do login*/
+			if (modelLogin.getLogin().equalsIgnoreCase("admin")
+					&& modelLogin.getSenha().equalsIgnoreCase("admin")) { /* simulando login */
+
+				request.getSession().setAttribute("usuario", modelLogin.getLogin());
+				
+				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("principal/principal.jsp");
+				redirecionar.forward(request, response);
+				
+			} else {
+				/* redirecionamento para tela de login se estiver errado*/
+				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
+				request.setAttribute("msg", "Informe o login e senha corretamente");
+				redirecionar.forward(request, response);
+			}
+
 		} else {
-			/* redirecionamento */
+			/* redirecionamento para tela de login se estiver incompleto*/
 			jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
 			request.setAttribute("msg", "Informe o login e senha corretamente");
 			redirecionar.forward(request, response);
