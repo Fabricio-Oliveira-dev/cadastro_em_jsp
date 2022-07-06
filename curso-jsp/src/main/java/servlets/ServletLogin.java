@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+import dao.DaoLoginRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,9 +11,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
 /*Controller são servlets*/
-@WebServlet(urlPatterns = {"/principal/ServletLogin", "/ServletLogin"}) /* Mapeamento de URL que vem da tela */
+@WebServlet(urlPatterns = { "/principal/ServletLogin", "/ServletLogin" }) /* Mapeamento de URL que vem da tela */
 public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	private DaoLoginRepository daoLoginRepository = new DaoLoginRepository();
 
 	public ServletLogin() {
 	}
@@ -30,46 +33,51 @@ public class ServletLogin extends HttpServlet {
 
 		String login = request.getParameter("login");
 		String senha = request.getParameter("senha");
+		String url = request.getParameter("url");
 
-		/* validação se foi informado os dados */
-		if (login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
+		try {
+			/* validação se foi informado os dados */
+			if (login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
 
-			/* pegando parâmetro e passando para objeto */
-			ModelLogin modelLogin = new ModelLogin();
-			modelLogin.setLogin(login);
-			modelLogin.setSenha(senha);
-			String url = request.getParameter("url");
+				/* pegando parâmetro e passando para objeto */
+				ModelLogin modelLogin = new ModelLogin();
+				modelLogin.setLogin(login);
+				modelLogin.setSenha(senha);
 
-			/*redirecionando para a tela depois do login*/
-			if (modelLogin.getLogin().equalsIgnoreCase("admin")
-					&& modelLogin.getSenha().equalsIgnoreCase("admin")) { /* simulando login */
+				/* redirecionando para a tela depois do login */
+				if (daoLoginRepository.validarAutenticacao(modelLogin)) { /* simulando login */
 
-				request.getSession().setAttribute("usuario", modelLogin.getLogin());
-				
-				if (url == null || url.equals("null")) {
-					url = "principal/principal.jsp"; /*se não tiver uma tela sendo acessada, coloca a tela incial do sistema*/
+					request.getSession().setAttribute("usuario", modelLogin.getLogin());
+
+					if (url == null || url.equals("null")) {
+						url = "principal/principal.jsp"; /*
+															 * se não tiver uma tela sendo acessada, coloca a tela
+															 * incial do sistema
+															 */
+					}
+
+					jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher(url);
+					redirecionar.forward(request, response);
+
+				} else {
+					/* redirecionamento para tela de login se estiver errado */
+					jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
+					request.setAttribute("msg", "Informe o login e senha corretamente");
+					redirecionar.forward(request, response);
 				}
-				
-				
-				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher(url);
-				redirecionar.forward(request, response);
-				
+
 			} else {
-				/* redirecionamento para tela de login se estiver errado*/
+				/* redirecionamento para tela de login se estiver incompleto */
 				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
 				request.setAttribute("msg", "Informe o login e senha corretamente");
 				redirecionar.forward(request, response);
 			}
 
-		} else {
-			/* redirecionamento para tela de login se estiver incompleto*/
-			jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
-			request.setAttribute("msg", "Informe o login e senha corretamente");
-			redirecionar.forward(request, response);
+			/* autenticação */
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		/* autenticação */
-
 	}
 
 }
