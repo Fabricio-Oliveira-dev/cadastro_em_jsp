@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
 /*Controller são servlets*/
-@WebServlet("/ServletLogin") /* Mapeamento de URL que vem da tela */
+@WebServlet(urlPatterns = {"/principal/ServletLogin", "/ServletLogin"}) /* Mapeamento de URL que vem da tela */
 public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +40,7 @@ public class ServletLogin extends HttpServlet {
 			ModelLogin modelLogin = new ModelLogin();
 			modelLogin.setLogin(login);
 			modelLogin.setSenha(senha);
+			String url = request.getParameter("url");
 
 			/*redirecionando para a tela depois do login*/
 			if (modelLogin.getLogin().equalsIgnoreCase("admin")
@@ -47,19 +48,24 @@ public class ServletLogin extends HttpServlet {
 
 				request.getSession().setAttribute("usuario", modelLogin.getLogin());
 				
-				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("principal/principal.jsp");
+				if (url == null || url.equals("null")) {
+					url = "principal/principal.jsp"; /*se não tiver uma tela sendo acessada, coloca a tela incial do sistema*/
+				}
+				
+				
+				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher(url);
 				redirecionar.forward(request, response);
 				
 			} else {
 				/* redirecionamento para tela de login se estiver errado*/
-				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
+				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
 				request.setAttribute("msg", "Informe o login e senha corretamente");
 				redirecionar.forward(request, response);
 			}
 
 		} else {
 			/* redirecionamento para tela de login se estiver incompleto*/
-			jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
+			jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
 			request.setAttribute("msg", "Informe o login e senha corretamente");
 			redirecionar.forward(request, response);
 		}
