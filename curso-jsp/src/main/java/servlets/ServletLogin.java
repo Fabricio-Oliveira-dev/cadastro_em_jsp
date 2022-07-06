@@ -68,7 +68,7 @@ public class ServletLogin extends HttpServlet {
 
 			} else {
 				/* redirecionamento para tela de login se estiver incompleto */
-				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
+				jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
 				request.setAttribute("msg", "Informe o login e senha corretamente");
 				redirecionar.forward(request, response);
 			}
@@ -77,6 +77,9 @@ public class ServletLogin extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			jakarta.servlet.RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
 		}
 	}
 
