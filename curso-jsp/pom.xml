@@ -8,6 +8,14 @@
 	<description>curso jsp Jdev</description>
 
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4.1212</version>
+		</dependency>
+
 		<!-- 
 		<dependency>
 			<groupId>javax.servlet</groupId>
