@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 
 import dao.DaoLoginRepository;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,7 +25,16 @@ public class ServletLogin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String acao = request.getParameter("acao");
+		
+		if (acao!= null && !acao.isEmpty() && acao.equalsIgnoreCase("logout")) {
+			request.getSession().invalidate(); // invalidar sessão
+			RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
+			redirecionar.forward(request, response);
+		}else {
+		
+		doPost(request, response);
+		}
 	}
 
 	/* recebe os dados enviados por um formulário */
