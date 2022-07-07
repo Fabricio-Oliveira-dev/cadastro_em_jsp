@@ -33,7 +33,7 @@ h5 {
 
 .msg {
 	position: absolute;
-	top: 68%;
+	top: 20%;
 	left: 33%;
 	right: 33%;
 	color: red;
@@ -54,14 +54,14 @@ h5 {
 
 		<input type="hidden" value="<%=request.getParameter("url")%>"
 			name=url>
-		<div class="col-md-6">
+		<div class="mb-3">
 			<label class="form-label">Login</label> <input class="form-control"
 				name="login" type="text" required>
 			<div class="invalid-feedback">Informe o login!</div>
 			<div class="valid-feedback">ok</div>
 		</div>
 
-		<div class="col-md-6">
+		<div class="mb-3">
 			<label class="form-label">Senha </label> <input class="form-control"
 				name="senha" type="password" required>
 			<div class="invalid-feedback">Informe a senha!!</div>
