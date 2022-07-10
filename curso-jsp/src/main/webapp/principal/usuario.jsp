@@ -47,22 +47,22 @@
 
 														<form class="form-material"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
-															method="post">
-															<div class="form-group form-default">
+															method="post" id="formUser">
+															<div class="form-group form-default form-static-label">
 																<input type="text" name="Id" Id="Id"
 																	class="form-control" readonly="readonly"
 																	value="${modelLogin.id}"> <span
 																	class="form-bar"></span> <label class="float-label">ID:</label>
 															</div>
 
-															<div class="form-group form-default">
+															<div class="form-group form-default form-static-label">
 																<input type="text" name="nome" Id="nome"
 																	class="form-control" required="required"
 																	value="${modelLogin.nome}"> <span
 																	class="form-bar"></span> <label class="float-label">Nome:</label>
 															</div>
 
-															<div class="form-group form-default">
+															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" Id="email"
 																	class="form-control" required="required"
 																	autocomplete="off" value="${modelLogin.email}">
@@ -70,7 +70,7 @@
 																	class="float-label">Email:</label>
 															</div>
 
-															<div class="form-group form-default">
+															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" Id="login"
 																	class="form-control" required="required"
 																	autocomplete="off" value="${modelLogin.login}">
@@ -78,7 +78,7 @@
 																	class="float-label">Login</label>
 															</div>
 
-															<div class="form-group form-default">
+															<div class="form-group form-default form-static-label">
 																<input type="password" name="senha" Id="senha"
 																	class="form-control" required="required"
 																	autocomplete="off" value="${modelLogin.senha}">
@@ -86,7 +86,7 @@
 																	class="float-label">Senha</label>
 															</div>
 
-															<button class="btn btn-primary waves-effect waves-light">Novo</button>
+															<button class="btn btn-primary waves-effect waves-light" onclick="limparForm();">Novo</button>
 															<button class="btn btn-success waves-effect waves-light">Salvar</button>
 															<button class="btn btn-info waves-effect waves-light">Excluir</button>
 														</form>
@@ -104,6 +104,16 @@
 					</div>
 
 					<jsp:include page="javascript-file.jsp"></jsp:include>
+<script type="text/javascript">
+
+function limparForm() {
+	var elementos = document.getElementById("formUser").elements; /*retorna elementos HTML dentro do form*/
+	
+	for (p = 0; p < elementos.length; p++) {
+		elementos[p].value = '';
+	}
+}
+</script>
 </body>
 
 </html>
