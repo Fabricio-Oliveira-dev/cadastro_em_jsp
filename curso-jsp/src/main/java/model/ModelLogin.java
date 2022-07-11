@@ -15,7 +15,7 @@ public class ModelLogin implements Serializable{
 	public boolean isNovo() {
 		
 		if (this.id == null) {
-			return true;/*inserior novo*/
+			return true;/*inserir novo*/
 		}else if (this.id != null & this.id > 0) {
 			return false; /*atualizar*/
 		}

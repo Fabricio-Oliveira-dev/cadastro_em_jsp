@@ -48,6 +48,9 @@
 														<form class="form-material"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
+															
+															<input type="hidden" name="acao" id="acao" value=" ">
+															
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="Id" Id="Id"
 																	class="form-control" readonly="readonly"
@@ -86,9 +89,9 @@
 																	class="float-label">Senha</label>
 															</div>
 
-															<button class="btn btn-primary waves-effect waves-light" onclick="limparForm();">Novo</button>
-															<button class="btn btn-success waves-effect waves-light">Salvar</button>
-															<button class="btn btn-info waves-effect waves-light">Excluir</button>
+															<button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm()">Novo</button>
+															<button type="submit" class="btn btn-success waves-effect waves-light">Salvar</button>
+															<button type="button" class="btn btn-info waves-effect waves-light" onclick="criarDelete()">Excluir</button>
 														</form>
 														<span>${msg}</span>
 													</div>
@@ -105,6 +108,15 @@
 
 					<jsp:include page="javascript-file.jsp"></jsp:include>
 <script type="text/javascript">
+
+function criarDelete() {
+	var form = document.getElementById("formUser");
+	form.method = 'get';
+	form.value = 'deletar';
+	form.submit();	
+	
+}
+
 
 function limparForm() {
 	var elementos = document.getElementById("formUser").elements; /*retorna elementos HTML dentro do form*/
