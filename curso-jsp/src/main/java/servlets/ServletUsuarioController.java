@@ -28,7 +28,7 @@ public class ServletUsuarioController extends HttpServlet {
 		try {
 			String acao = request.getParameter("acao");
 
-			if (acao != null && !acao.isEmpty()  && acao.equalsIgnoreCase("Excluir")) {
+			if (acao != null && !acao.isEmpty()  && acao.equalsIgnoreCase("deletar")) {
 				
 				String idUser = request.getParameter("id");
 				

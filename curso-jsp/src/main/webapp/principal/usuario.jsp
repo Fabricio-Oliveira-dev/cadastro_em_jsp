@@ -52,7 +52,7 @@
 															<input type="hidden" name="acao" id="acao" value=" ">
 															
 															<div class="form-group form-default form-static-label">
-																<input type="text" name="Id" Id="Id"
+																<input type="text" name="id" id="id"
 																	class="form-control" readonly="readonly"
 																	value="${modelLogin.id}"> <span
 																	class="form-bar"></span> <label class="float-label">ID:</label>
@@ -93,8 +93,14 @@
 															<button type="submit" class="btn btn-success waves-effect waves-light">Salvar</button>
 															<button type="button" class="btn btn-info waves-effect waves-light" onclick="criarDelete()">Excluir</button>
 														</form>
-														<span>${msg}</span>
+														</div>
 													</div>
+													</div>
+													</div>
+													</div>
+														<span>${msg}</span>
+													
+													
 													<!-- Page-body end -->
 												</div>
 												<div id="styleSelector"></div>
@@ -110,13 +116,12 @@
 <script type="text/javascript">
 
 function criarDelete() {
-	var form = document.getElementById("formUser");
-	form.method = 'get';
-	form.value = 'deletar';
-	form.submit();	
-	
+    var form = document.getElementById('formUser');
+    var acao = document.getElementById('acao');
+    acao.value = 'deletar';
+    form.method = 'get';
+    form.submit();	
 }
-
 
 function limparForm() {
 	var elementos = document.getElementById("formUser").elements; /*retorna elementos HTML dentro do form*/
