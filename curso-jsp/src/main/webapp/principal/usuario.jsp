@@ -184,7 +184,7 @@
 				data : 'nomeBusca=' + nomeBusca + '&acao=buscaruserajax',
 				success : function(response) {
 
-					
+				alert(response);
 				}
 
 			}).fail(
