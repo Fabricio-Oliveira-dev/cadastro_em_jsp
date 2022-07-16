@@ -48,9 +48,9 @@
 														<form class="form-material"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
-															
+
 															<input type="hidden" name="acao" id="acao" value=" ">
-															
+
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="id" id="id"
 																	class="form-control" readonly="readonly"
@@ -89,48 +89,82 @@
 																	class="float-label">Senha</label>
 															</div>
 
-															<button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm()">Novo</button>
-															<button type="submit" class="btn btn-success waves-effect waves-light">Salvar</button>
-															<button type="button" class="btn btn-info waves-effect waves-light" onclick="criarDelete()">Excluir</button>
+															<button type="button"
+																class="btn btn-primary waves-effect waves-light"
+																onclick="limparForm()">Novo</button>
+															<button type="submit"
+																class="btn btn-success waves-effect waves-light">Salvar</button>
+															<button type="button"
+																class="btn btn-info waves-effect waves-light"
+																onclick="criarDeleteComAjax()">Excluir</button>
 														</form>
-														</div>
 													</div>
-													</div>
-													</div>
-													</div>
-														<span>${msg}</span>
-													
-													
-													<!-- Page-body end -->
 												</div>
-												<div id="styleSelector"></div>
 											</div>
 										</div>
 									</div>
+									<span id="msg">${msg}</span>
+
+
+									<!-- Page-body end -->
 								</div>
+								<div id="styleSelector"></div>
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-					<jsp:include page="javascript-file.jsp"></jsp:include>
-<script type="text/javascript">
-
-function criarDelete() {
-    var form = document.getElementById('formUser');
-    var acao = document.getElementById('acao');
-    acao.value = 'deletar';
-    form.method = 'get';
-    form.submit();	
-}
-
-function limparForm() {
-	var elementos = document.getElementById("formUser").elements; /*retorna elementos HTML dentro do form*/
+	<jsp:include page="javascript-file.jsp"></jsp:include>
+	<script type="text/javascript">
 	
-	for (p = 0; p < elementos.length; p++) {
-		elementos[p].value = '';
+	function criarDeleteComAjax(){
+		if(confirm('Deseja Realmente excluir os dados?')) {
+			var urlAction = document.getElementById('formUser').action;
+			var idUser = document.getElementById('id').value;
+			
+			$.ajax({
+				
+				method: 'get', 
+				url: urlAction,
+				data: 'id=' + idUser + '&acao=deletarajax',
+				success: function(response) {
+					
+					limparForm();
+					document.getElementById('msg').textContent = response;
+				}
+				
+			}).fail(function(xhr, status, errorThrown) {
+				alert('Erro ao deletar o usuário por id:' + xhr.responseText);
+				
+			});
+			
+		}
 	}
-}
-</script>
+	
+	
+		function criarDelete() {
+			
+			if(confirm("Deseja REALMENTE excluir?")) {
+			
+			var form = document.getElementById('formUser');
+			var acao = document.getElementById('acao');
+			acao.value = 'deletar';
+			form.method = 'get';
+			form.submit();
+			}
+		}
+
+		function limparForm() {
+			var elementos = document.getElementById("formUser").elements; /*retorna elementos HTML dentro do form*/
+
+			for (p = 0; p < elementos.length; p++) {
+				elementos[p].value = '';
+			}
+		}
+	</script>
 </body>
 
 </html>
