@@ -143,23 +143,25 @@
 						<input type="text" class="form-control" placeholder="Nome"
 							aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
 						<div class="input-group-append">
-							<button class="btn btn success" type="button" onclick="buscarUsuario();">Buscar</button>
+							<button class="btn btn success" type="button"
+								onclick="buscarUsuario();">Buscar</button>
 						</div>
 					</div>
+					<div style="height: 300px; overflow: scroll;">
+						<table class="table" id="tabelaresultados">
+							<thead>
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Nome</th>
+									<th scope="col">Ver</th>
+								</tr>
+							</thead>
+							<tbody>
 
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">Nome</th>
-								<th scope="col">Ver</th>
-							</tr>
-						</thead>
-						<tbody>
-
-						</tbody>
-					</table>
-
+							</tbody>
+						</table>
+					</div>
+					<span id="totalResultados"></span>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -184,7 +186,19 @@
 				data : 'nomeBusca=' + nomeBusca + '&acao=buscaruserajax',
 				success : function(response) {
 
-				alert(response);
+				var json = JSON.parse(response); //conversão de string para Json
+				
+				$('#tabelaresultados > tbody > tr').remove();
+				
+				for(var p = 0; p < json.length; p++) {
+					
+					$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td>
+					<td>'+json[p].nome+'</td>
+					<td><button type="button" class="btn btn-info">Ver</button></td></tr>');
+				}
+				
+				document.getElementById('totalResultados').textContent = 'Resultados: ' + json.length;
+				
 				}
 
 			}).fail(
