@@ -75,7 +75,16 @@
 																<span class="form-bar"></span> <label
 																	class="float-label">Email:</label>
 															</div>
-
+															
+															<div class="form-group form-default form-static-label">
+																<select class="form-control" aria-label="Default select example" name="perfil">
+																	<option disabled="disabled">Selecione o Perfil</option>
+																	<option value="ADMIN">Admin</option>
+																	<option value="SECRETARIA">Secretária</option>
+																	<option value="AUXILIAR">Auxiliar</option>
+																</select>
+															</div>
+															
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" Id="login"
 																	class="form-control" required="required"
@@ -124,10 +133,11 @@
 											<tbody>
 												<c:forEach items='${modelLogins}' var='ml'>
 													<tr>
-													<td><c:out value="${ml.id}"></c:out></td>
-													<td><c:out value="${ml.nome}"></c:out></td>
-													<td><a class="btn btn success" href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></td>
-													
+														<td><c:out value="${ml.id}"></c:out></td>
+														<td><c:out value="${ml.nome}"></c:out></td>
+														<td><a class="btn btn success"
+															href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+
 													</tr>
 												</c:forEach>
 											</tbody>
