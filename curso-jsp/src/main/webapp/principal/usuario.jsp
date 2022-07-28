@@ -49,7 +49,7 @@
 														<h4 class="sub-title">Cad. Usuário</h4>
 
 
-														<form class="form-material"
+														<form class="form-material" enctype="multiparti/form-data"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
 
@@ -60,6 +60,13 @@
 																	class="form-control" readonly="readonly"
 																	value="${modelLogin.id}"> <span
 																	class="form-bar"></span> <label class="float-label">ID:</label>
+															</div>
+
+															<div class="form-group form-default input-group mb-4">
+																<div class="input-group-prepared">
+																<img alt="Imagem User" id="fotoembase64" src="" width="70px">
+																</div>
+																<input type="file" id="filefoto" name="filefoto" accept="image/*" onchange="visualizarImg('fotoembase64', 'filefoto')" class="form-control-file" style="margin-top: 5px; margin-left:5px">
 															</div>
 
 															<div class="form-group form-default form-static-label">
@@ -260,6 +267,22 @@
 	</div>
 
 	<script type="text/javascript">
+	
+	function visualizarImg(fotoembase64, filefoto) {
+		var preview = document.getElementById(fotoembase64); //campo img
+		var fileUser = document.getElementById(filefoto).files[0];
+		var reader = new fileReader();
+		
+		reader.onloadend = function () {
+			preview.src = reader.result; // carrega a foto na tela
+		};
+		if (fileUser) {
+			reader.readAsDataURL(fileUser); // preview da imagem
+		}else {
+			preview.src = '';
+		}
+	}
+	
 		function verEditar(id) {
 			var urlAction = document.getElementById("formUser").action;
 			window.location.href = urlAction + "?acao=buscarEditar&id=" + id;
