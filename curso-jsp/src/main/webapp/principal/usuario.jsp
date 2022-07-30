@@ -49,7 +49,7 @@
 														<h4 class="sub-title">Cad. Usuário</h4>
 
 
-														<form class="form-material" enctype="multiparti/form-data"
+														<form class="form-material" enctype="multipart/form-data"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
 
@@ -271,7 +271,7 @@
 	function visualizarImg(fotoembase64, filefoto) {
 		var preview = document.getElementById(fotoembase64); //campo img
 		var fileUser = document.getElementById(filefoto).files[0];
-		var reader = new fileReader();
+		var reader = new FileReader();
 		
 		reader.onloadend = function () {
 			preview.src = reader.result; // carrega a foto na tela
