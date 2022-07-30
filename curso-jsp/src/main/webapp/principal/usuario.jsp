@@ -64,7 +64,12 @@
 
 															<div class="form-group form-default input-group mb-4">
 																<div class="input-group-prepared">
-																<img alt="Imagem User" id="fotoembase64" src="" width="70px">
+																	<c:if test="${modelLogin.fotouser != '' && modelLogin.fotouser != null}">
+																		<img alt="Imagem User" id="fotoembase64" src="${modelLogin.fotouser}" width="70px">
+																	</c:if>
+																	<c:if test="${modelLogin.fotouser == '' || modelLogin.fotouser == null}">
+																	<img alt="Imagem User" id="fotoembase64" src="assets/images/userprofile.png" width="70px">
+																	</c:if>
 																</div>
 																<input type="file" id="filefoto" name="filefoto" accept="image/*" onchange="visualizarImg('fotoembase64', 'filefoto')" class="form-control-file" style="margin-top: 5px; margin-left:5px">
 															</div>
