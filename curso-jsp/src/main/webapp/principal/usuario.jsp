@@ -1,5 +1,5 @@
 <%@page import="model.ModelLogin"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -64,14 +64,26 @@
 
 															<div class="form-group form-default input-group mb-4">
 																<div class="input-group-prepared">
-																	<c:if test="${modelLogin.fotouser != '' && modelLogin.fotouser != null}">
-																		<img alt="Imagem User" id="fotoembase64" src="${modelLogin.fotouser}" width="70px">
+																	<c:if
+																		test="${modelLogin.fotouser != '' && modelLogin.fotouser != null}">
+																		<a
+																			href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modelLogin.id}">
+																			<img alt="Imagem User" id="fotoembase64"
+																			src="${modelLogin.fotouser}" width="70px">
+																		</a>
 																	</c:if>
-																	<c:if test="${modelLogin.fotouser == '' || modelLogin.fotouser == null}">
-																	<img alt="Imagem User" id="fotoembase64" src="assets/images/userprofile.png" width="70px">
+
+																	<c:if
+																		test="${modelLogin.fotouser == '' || modelLogin.fotouser == null}">
+																		<img alt="Imagem User" id="fotoembase64"
+																			src="assets/images/userprofile.png" width="70px">
 																	</c:if>
 																</div>
-																<input type="file" id="filefoto" name="filefoto" accept="image/*" onchange="visualizarImg('fotoembase64', 'filefoto')" class="form-control-file" style="margin-top: 5px; margin-left:5px">
+																<input type="file" id="filefoto" name="filefoto"
+																	accept="image/*"
+																	onchange="visualizarImg('fotoembase64', 'filefoto')"
+																	class="form-control-file"
+																	style="margin-top: 5px; margin-left: 5px">
 															</div>
 
 															<div class="form-group form-default form-static-label">
@@ -88,44 +100,88 @@
 																<span class="form-bar"></span> <label
 																	class="float-label">Email:</label>
 															</div>
-															
+
 															<div class="form-group form-default form-static-label">
-																<select class="form-control" aria-label="Default select example" name="perfil">
+																<select class="form-control"
+																	aria-label="Default select example" name="perfil">
 																	<option disabled="disabled">Selecione o Perfil</option>
-																	
-																	<option value="ADMIN" <%
-																	
-																	ModelLogin modelLogin = (ModelLogin) request.getAttribute("modelLogin");
-																	
-																	if(modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
-																		out.print(" ");
-																		out.print("selected=\"selected\"");
-																		out.print(" ");
-																	} %>>Admin</option>
-																	
-																	<option value="SECRETARIA" <%
-																	
-																	modelLogin = (ModelLogin) request.getAttribute("modelLogin");
-																	
-																	if(modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")) {
-																		out.print(" ");
-																		out.print("selected=\"selected\"");
-																		out.print(" ");
-																	} %>>Secretária</option>
-																	
-																	<option value="AUXILIAR" <%
-																	
-																	modelLogin = (ModelLogin) request.getAttribute("modelLogin");
-																	
-																	if(modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
-																		out.print(" ");
-																		out.print("selected=\"selected\"");
-																		out.print(" ");
-																	} %>>Auxiliar</option>
-																	
+
+																	<option value="ADMIN"
+																		<%ModelLogin modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+
+if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
+	out.print(" ");
+	out.print("selected=\"selected\"");
+	out.print(" ");
+}%>>Admin</option>
+
+																	<option value="SECRETARIA"
+																		<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+
+if (modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")) {
+	out.print(" ");
+	out.print("selected=\"selected\"");
+	out.print(" ");
+}%>>Secretária</option>
+
+																	<option value="AUXILIAR"
+																		<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+
+if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
+	out.print(" ");
+	out.print("selected=\"selected\"");
+	out.print(" ");
+}%>>Auxiliar</option>
+
 																</select>
 															</div>
-															
+
+															<div class="form-group form-default form-static-label">
+																<input onblur="pesquisaCep()" type="text" name="cep"
+																	Id="cep" class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.cep}"> <span
+																	class="form-bar"></span> <label class="float-label">Cep</label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="logradouro" Id="logradouro"
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.logradouro}">
+																<span class="form-bar"></span> <label
+																	class="float-label">Logradouro</label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="bairro" Id="bairro"
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.bairro}">
+																<span class="form-bar"></span> <label
+																	class="float-label">Bairro</label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="localidade" Id="localidade"
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.localidade}">
+																<span class="form-bar"></span> <label
+																	class="float-label">Localidade</label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="uf" Id="uf"
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.uf}"> <span
+																	class="form-bar"></span> <label class="float-label">Estado</label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="numero" Id="numero"
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.numero}">
+																<span class="form-bar"></span> <label
+																	class="float-label">Numero</label>
+															</div>
+
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" Id="login"
 																	class="form-control" required="required"
@@ -143,27 +199,25 @@
 															</div>
 
 															<div class="form-group form-default form-static-label">
-															<input type="radio" name="sexo" checked="checked" value="MASCULINO" <%
-															
-															modelLogin = (ModelLogin) request.getAttribute("modelLogin");
-																	
-															if(modelLogin != null && modelLogin.getPerfil().equals("MASCULINO")) {
-																	out.print(" ");
-																	out.print("checked=\"checked\"");
-																	out.print(" ");
-																}
-															%>>Masculino</>
-															
-															<input type="radio" name="sexo" checked="checked" value="FEMININO" <%
-															
-															modelLogin = (ModelLogin) request.getAttribute("modelLogin");
-																	
-															if(modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
-																	out.print(" ");
-																	out.print("checked=\"checked\"");
-																	out.print(" ");
-																}
-															%>>Feminino</>
+																<input type="radio" name="sexo" checked="checked"
+																	value="MASCULINO"
+																	<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+
+if (modelLogin != null && modelLogin.getPerfil().equals("MASCULINO")) {
+	out.print(" ");
+	out.print("checked=\"checked\"");
+	out.print(" ");
+}%>>Masculino</>
+
+																<input type="radio" name="sexo" checked="checked"
+																	value="FEMININO"
+																	<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+
+if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
+	out.print(" ");
+	out.print("checked=\"checked\"");
+	out.print(" ");
+}%>>Feminino</>
 															</div>
 
 															<button type="button"
@@ -208,6 +262,22 @@
 											</tbody>
 										</table>
 									</div>
+
+									<nav aria-label="Page navigation example">
+										<ul class="pagination">
+										
+										<%
+										int totalPagina = (int) request.getAttribute("totalPagina");
+										
+										for (int p = 0; p < totalPagina; p++) {
+											String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (p * 5);
+											out.print("<li class=\"page-item\"><a class=\"page-link\" href=\""+ url +"\">"+(p + 1)+"</a></li>");
+										}
+										%>
+										
+											
+										</ul>
+									</nav>
 
 
 									<!-- Page-body end -->
@@ -272,22 +342,39 @@
 	</div>
 
 	<script type="text/javascript">
-	
-	function visualizarImg(fotoembase64, filefoto) {
-		var preview = document.getElementById(fotoembase64); //campo img
-		var fileUser = document.getElementById(filefoto).files[0];
-		var reader = new FileReader();
-		
-		reader.onloadend = function () {
-			preview.src = reader.result; // carrega a foto na tela
-		};
-		if (fileUser) {
-			reader.readAsDataURL(fileUser); // preview da imagem
-		}else {
-			preview.src = '';
+		function pesquisaCep() {
+			var cep = $("#cep").val();
+
+			$.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?",
+					function(dados) {
+
+						if (!("erro" in dados)) {
+							//Atualiza os campos com os valores da consulta.
+							$("#cep").val(dados.cep);
+							$("#logradouro").val(dados.logradouro);
+							$("#bairro").val(dados.bairro);
+							$("#localidade").val(dados.localidade);
+							$("#uf").val(dados.uf);
+						}
+
+					})
 		}
-	}
-	
+
+		function visualizarImg(fotoembase64, filefoto) {
+			var preview = document.getElementById(fotoembase64); //campo img
+			var fileUser = document.getElementById(filefoto).files[0];
+			var reader = new FileReader();
+
+			reader.onloadend = function() {
+				preview.src = reader.result; // carrega a foto na tela
+			};
+			if (fileUser) {
+				reader.readAsDataURL(fileUser); // preview da imagem
+			} else {
+				preview.src = '';
+			}
+		}
+
 		function verEditar(id) {
 			var urlAction = document.getElementById("formUser").action;
 			window.location.href = urlAction + "?acao=buscarEditar&id=" + id;
