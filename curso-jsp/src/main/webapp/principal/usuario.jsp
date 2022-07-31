@@ -265,17 +265,17 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 
 									<nav aria-label="Page navigation example">
 										<ul class="pagination">
-										
-										<%
-										int totalPagina = (int) request.getAttribute("totalPagina");
-										
-										for (int p = 0; p < totalPagina; p++) {
-											String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (p * 5);
-											out.print("<li class=\"page-item\"><a class=\"page-link\" href=\""+ url +"\">"+(p + 1)+"</a></li>");
-										}
-										%>
-										
-											
+
+											<%
+											int totalPagina = (int) request.getAttribute("totalPagina");
+
+											for (int p = 0; p < totalPagina; p++) {
+												String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (p * 5);
+												out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "\">" + (p + 1) + "</a></li>");
+											}
+											%>
+
+
 										</ul>
 									</nav>
 
@@ -331,6 +331,12 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 							</tbody>
 						</table>
 					</div>
+
+					<nav aria-label="Page navigation example">
+						<ul class="pagination" id="ulPaginacaoUserAjax">
+						</ul>
+					</nav>
+
 					<span id="totalResultados"></span>
 				</div>
 				<div class="modal-footer">
@@ -380,6 +386,59 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 			window.location.href = urlAction + "?acao=buscarEditar&id=" + id;
 		}
 
+		function buscaUserPagAjax(url) {
+			
+			var urlAction = document.getElementById('formUser').action;
+			var nomeBusca = document.getElementById('nomeBusca').value;
+			
+			$.ajax({
+
+						method : 'get',
+						url : urlAction,
+						data : url,
+						success : function(response, textStatus, xhr) {
+
+							var json = JSON.parse(response); //conversão de string para Json
+
+							$('#tabelaresultados > tbody > tr').remove();
+							$("#ulPaginacaoUserAjax > li").remove();
+
+							for (var p = 0; p < json.length; p++) {
+
+								$('#tabelaresultados > tbody')
+										.append(
+												'<tr> <td>'
+														+ json[p].id
+														+ '</td><td>'
+														+ json[p].nome
+														+ '</td><td><button onclick="verEditar('
+														+ json[p].id
+														+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
+							}
+
+							document.getElementById('totalResultados').textContent = 'Resultados: '+ json.length;
+
+							var totalPagina = xhr.getResponseHeader("totalPagina");
+							alert(totalPagina);
+							
+							for (var p = 0; p < totalPagina; p++) {
+								
+								
+								var url = 'nomeBusca=' + nomeBusca + '&acao=buscaruserajaxPage&pagina=' + (p * 5);
+								
+								$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1)+'</a></li>');
+							}
+						}
+
+					}).fail(
+					function(xhr, status, errorThrown) {
+						alert('Erro ao buscar o usuário por nome:'
+								+ xhr.responseText);
+
+					});
+			
+		}
+		
 		function buscarUsuario() {
 
 			var nomeBusca = document.getElementById('nomeBusca').value;
@@ -387,20 +446,18 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') { /*validando se é diferente de vazio*/
 
 				var urlAction = document.getElementById('formUser').action;
-				$
-						.ajax(
+				$.ajax(
 								{
 
 									method : 'get',
 									url : urlAction,
-									data : 'nomeBusca=' + nomeBusca
-											+ '&acao=buscaruserajax',
-									success : function(response) {
+									data : 'nomeBusca=' + nomeBusca + '&acao=buscaruserajax',
+									success : function(response, textStatus, xhr) {
 
 										var json = JSON.parse(response); //conversão de string para Json
 
-										$('#tabelaresultados > tbody > tr')
-												.remove();
+										$('#tabelaresultados > tbody > tr').remove();
+										$("#ulPaginacaoUserAjax > li").remove();
 
 										for (var p = 0; p < json.length; p++) {
 
@@ -415,10 +472,17 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 																	+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
 										}
 
-										document
-												.getElementById('totalResultados').textContent = 'Resultados: '
-												+ json.length;
+										document.getElementById('totalResultados').textContent = 'Resultados: '+ json.length;
 
+										var totalPagina = xhr.getResponseHeader("totalPagina");
+										alert(totalPagina);
+										
+										for (var p = 0; p < totalPagina; p++) {
+											
+											var url = 'nomeBusca=' + nomeBusca + '&acao=buscaruserajaxPage&pagina=' + (p * 5);
+											
+											$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1)+'</a></li>');
+										}
 									}
 
 								}).fail(
