@@ -34,7 +34,7 @@
                                     <!-- Page-body start -->
                                     <div class="page-body">
                                         <div class="row">
-                                        <h1>conteúdo da pagina aqui</h1>
+                                        <h1>Conteúdo da pagina aqui</h1>
                                         </div>    
                                     </div>
                                     <!-- Page-body end -->
