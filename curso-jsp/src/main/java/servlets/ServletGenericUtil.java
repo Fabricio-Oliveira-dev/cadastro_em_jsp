@@ -6,6 +6,7 @@ import dao.DAOUsuarioRepository;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import model.ModelLogin;
 
 public class ServletGenericUtil extends HttpServlet implements Serializable{
 	
@@ -22,6 +23,15 @@ public class ServletGenericUtil extends HttpServlet implements Serializable{
 		String usuarioLogado = (String) session.getAttribute("usuario");
 	
 		return daoUsuarioRepository.consultaUsuarioLogado(usuarioLogado).getId();
+	}
+	
+	public ModelLogin getUserLogadoObject(HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+
+		String usuarioLogado = (String) session.getAttribute("usuario");
+	
+		return daoUsuarioRepository.consultaUsuarioLogado(usuarioLogado);
 	}
 	
 }

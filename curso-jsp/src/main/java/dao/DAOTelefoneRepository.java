@@ -24,9 +24,11 @@ public class DAOTelefoneRepository {
 		
 		List<ModelTelefone> retorno = new ArrayList<ModelTelefone>();
 		
-		String sql = "select from telefone where usuario_pai_id =?";
+		String sql = "select * from telefone where usuario_pai_id =?";
 		
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
+		preparedStatement.setLong(1, idUserPai);
 		
 		ResultSet rs = preparedStatement.executeQuery();
 		
@@ -49,7 +51,9 @@ public class DAOTelefoneRepository {
 	public void gravaTelefone (ModelTelefone modelTelefone) throws Exception{
 		
 		String sql = "insert into telefone (numero, usuario_pai_id, usuario_cad_id) values (?, ?, ?)";
+		
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
 		preparedStatement.setString(1, modelTelefone.getNumero());
 		preparedStatement.setLong(2, modelTelefone.getUsuario_pai_id().getId());
 		preparedStatement.setLong(3, modelTelefone.getUsuario_cad_id().getId());
@@ -61,6 +65,7 @@ public class DAOTelefoneRepository {
 	}
 	
 	public void deleteFone (Long id) throws Exception{
+		
 		String sql = "delete from telefone where id = ?";
 		
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);

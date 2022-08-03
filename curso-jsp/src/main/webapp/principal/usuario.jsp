@@ -109,29 +109,29 @@
 																	<option value="ADMIN"
 																		<%ModelLogin modelLogin = (ModelLogin) request.getAttribute("modelLogin");
 
-if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
-	out.print(" ");
-	out.print("selected=\"selected\"");
-	out.print(" ");
-}%>>Admin</option>
+																			if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
+																				out.print(" ");
+																				out.print("selected=\"selected\"");
+																				out.print(" ");
+																			}%>>Admin</option>
 
 																	<option value="SECRETARIA"
 																		<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
 
-if (modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")) {
-	out.print(" ");
-	out.print("selected=\"selected\"");
-	out.print(" ");
-}%>>Secretária</option>
+																			if (modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")) {
+																				out.print(" ");
+																				out.print("selected=\"selected\"");
+																				out.print(" ");
+																			}%>>Secretária</option>
 
 																	<option value="AUXILIAR"
 																		<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
 
-if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
-	out.print(" ");
-	out.print("selected=\"selected\"");
-	out.print(" ");
-}%>>Auxiliar</option>
+																			if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
+																				out.print(" ");
+																				out.print("selected=\"selected\"");
+																				out.print(" ");
+																			}%>>Auxiliar</option>
 
 																</select>
 															</div>
@@ -203,21 +203,21 @@ if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
 																	value="MASCULINO"
 																	<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
 
-if (modelLogin != null && modelLogin.getPerfil().equals("MASCULINO")) {
-	out.print(" ");
-	out.print("checked=\"checked\"");
-	out.print(" ");
-}%>>Masculino</>
+																		if (modelLogin != null && modelLogin.getPerfil().equals("MASCULINO")) {
+																			out.print(" ");
+																			out.print("checked=\"checked\"");
+																			out.print(" ");
+																		}%>>Masculino</>
 
 																<input type="radio" name="sexo" checked="checked"
 																	value="FEMININO"
 																	<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
 
-if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
-	out.print(" ");
-	out.print("checked=\"checked\"");
-	out.print(" ");
-}%>>Feminino</>
+																		if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
+																			out.print(" ");
+																			out.print("checked=\"checked\"");
+																			out.print(" ");
+																		}%>>Feminino</>
 															</div>
 
 															<button type="button"
@@ -229,6 +229,12 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 																class="btn btn-info waves-effect waves-light"
 																onclick="criarDeleteComAjax()">Excluir</button>
 															<!-- Button trigger modal -->
+
+															<c:if test="${modelLogin.id > 0}">
+																<a href="<%= request.getContextPath() %>/ServletTelefone?iduser=${modelLogin.id}"
+																	class="btn btn-primary waves-effect waves-light">Telefone</a>
+															</c:if>
+
 															<button type="button" class="btn btn-secondary"
 																data-toggle="modal" data-target="#exampleModalUsuario">
 																Pesquisar</button>
@@ -348,6 +354,15 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 	</div>
 
 	<script type="text/javascript">
+	
+	$("#numero").keypress(function (event) {
+		return /\d/.test(String.fromCharCode(event.keyCode));
+	});
+	
+	$("#cep").keypress(function (event) {
+		return /\d/.test(String.fromCharCode(event.keyCode));
+	});
+	
 		function pesquisaCep() {
 			var cep = $("#cep").val();
 
@@ -387,58 +402,71 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 		}
 
 		function buscaUserPagAjax(url) {
-			
+
 			var urlAction = document.getElementById('formUser').action;
 			var nomeBusca = document.getElementById('nomeBusca').value;
-			
-			$.ajax({
 
-						method : 'get',
-						url : urlAction,
-						data : url,
-						success : function(response, textStatus, xhr) {
+			$
+					.ajax(
+							{
 
-							var json = JSON.parse(response); //conversão de string para Json
+								method : 'get',
+								url : urlAction,
+								data : url,
+								success : function(response, textStatus, xhr) {
 
-							$('#tabelaresultados > tbody > tr').remove();
-							$("#ulPaginacaoUserAjax > li").remove();
+									var json = JSON.parse(response); //conversão de string para Json
 
-							for (var p = 0; p < json.length; p++) {
+									$('#tabelaresultados > tbody > tr')
+											.remove();
+									$("#ulPaginacaoUserAjax > li").remove();
 
-								$('#tabelaresultados > tbody')
-										.append(
-												'<tr> <td>'
-														+ json[p].id
-														+ '</td><td>'
-														+ json[p].nome
-														+ '</td><td><button onclick="verEditar('
-														+ json[p].id
-														+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
-							}
+									for (var p = 0; p < json.length; p++) {
 
-							document.getElementById('totalResultados').textContent = 'Resultados: '+ json.length;
+										$('#tabelaresultados > tbody')
+												.append(
+														'<tr> <td>'
+																+ json[p].id
+																+ '</td><td>'
+																+ json[p].nome
+																+ '</td><td><button onclick="verEditar('
+																+ json[p].id
+																+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
+									}
 
-							var totalPagina = xhr.getResponseHeader("totalPagina");
-							alert(totalPagina);
-							
-							for (var p = 0; p < totalPagina; p++) {
-								
-								
-								var url = 'nomeBusca=' + nomeBusca + '&acao=buscaruserajaxPage&pagina=' + (p * 5);
-								
-								$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1)+'</a></li>');
-							}
-						}
+									document.getElementById('totalResultados').textContent = 'Resultados: '
+											+ json.length;
 
-					}).fail(
-					function(xhr, status, errorThrown) {
-						alert('Erro ao buscar o usuário por nome:'
-								+ xhr.responseText);
+									var totalPagina = xhr
+											.getResponseHeader("totalPagina");
+									alert(totalPagina);
 
-					});
-			
+									for (var p = 0; p < totalPagina; p++) {
+
+										var url = 'nomeBusca='
+												+ nomeBusca
+												+ '&acao=buscaruserajaxPage&pagina='
+												+ (p * 5);
+
+										$("#ulPaginacaoUserAjax")
+												.append(
+														'<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''
+																+ url
+																+ '\')">'
+																+ (p + 1)
+																+ '</a></li>');
+									}
+								}
+
+							}).fail(
+							function(xhr, status, errorThrown) {
+								alert('Erro ao buscar o usuário por nome:'
+										+ xhr.responseText);
+
+							});
+
 		}
-		
+
 		function buscarUsuario() {
 
 			var nomeBusca = document.getElementById('nomeBusca').value;
@@ -446,17 +474,21 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') { /*validando se é diferente de vazio*/
 
 				var urlAction = document.getElementById('formUser').action;
-				$.ajax(
+				$
+						.ajax(
 								{
 
 									method : 'get',
 									url : urlAction,
-									data : 'nomeBusca=' + nomeBusca + '&acao=buscaruserajax',
-									success : function(response, textStatus, xhr) {
+									data : 'nomeBusca=' + nomeBusca
+											+ '&acao=buscaruserajax',
+									success : function(response, textStatus,
+											xhr) {
 
 										var json = JSON.parse(response); //conversão de string para Json
 
-										$('#tabelaresultados > tbody > tr').remove();
+										$('#tabelaresultados > tbody > tr')
+												.remove();
 										$("#ulPaginacaoUserAjax > li").remove();
 
 										for (var p = 0; p < json.length; p++) {
@@ -472,16 +504,28 @@ if (modelLogin != null && modelLogin.getPerfil().equals("FEMININO")) {
 																	+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
 										}
 
-										document.getElementById('totalResultados').textContent = 'Resultados: '+ json.length;
+										document
+												.getElementById('totalResultados').textContent = 'Resultados: '
+												+ json.length;
 
-										var totalPagina = xhr.getResponseHeader("totalPagina");
+										var totalPagina = xhr
+												.getResponseHeader("totalPagina");
 										alert(totalPagina);
-										
+
 										for (var p = 0; p < totalPagina; p++) {
-											
-											var url = 'nomeBusca=' + nomeBusca + '&acao=buscaruserajaxPage&pagina=' + (p * 5);
-											
-											$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1)+'</a></li>');
+
+											var url = 'nomeBusca='
+													+ nomeBusca
+													+ '&acao=buscaruserajaxPage&pagina='
+													+ (p * 5);
+
+											$("#ulPaginacaoUserAjax")
+													.append(
+															'<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''
+																	+ url
+																	+ '\')">'
+																	+ (p + 1)
+																	+ '</a></li>');
 										}
 									}
 
