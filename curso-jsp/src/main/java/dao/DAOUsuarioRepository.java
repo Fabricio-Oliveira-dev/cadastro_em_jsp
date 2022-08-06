@@ -1,17 +1,21 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
+import model.ModelTelefone;
 
 public class DAOUsuarioRepository {
 
 	private Connection connection;
+	
 
 	public DAOUsuarioRepository() {
 		connection = SingleConnectionBanco.getConnection();
@@ -173,6 +177,38 @@ public class DAOUsuarioRepository {
 			modelLogin.setPerfil(resultado.getString("sexo"));
 			// modelLogin.setSenha(resultado.getString("senha"));
 
+			modelLogin.setTelefones(this.listFone(modelLogin.getId()));
+			
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+	}
+	
+	public List<ModelLogin> consultaUsuarioListRel(Long userLogado, String dataInicial, String dataFinal) throws Exception {
+
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado + " and datanascimento >= ? and datanascimento <= ?";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setDate(1, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
+		statement.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
+		
+		ResultSet resultado = statement.executeQuery();
+
+		while (resultado.next()) {
+			ModelLogin modelLogin = new ModelLogin();
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setPerfil(resultado.getString("perfil"));
+			modelLogin.setPerfil(resultado.getString("sexo"));
+			// modelLogin.setSenha(resultado.getString("senha"));
+
+			modelLogin.setTelefones(this.listFone(modelLogin.getId()));
+			
 			retorno.add(modelLogin);
 		}
 
@@ -470,5 +506,33 @@ public class DAOUsuarioRepository {
 
 		connection.commit();
 
+	}
+	
+public List<ModelTelefone> listFone(Long idUserPai) throws Exception{
+		
+		List<ModelTelefone> retorno = new ArrayList<ModelTelefone>();
+		
+		String sql = "select * from telefone where usuario_pai_id =?";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
+		preparedStatement.setLong(1, idUserPai);
+		
+		ResultSet rs = preparedStatement.executeQuery();
+		
+		while (rs.next()) {
+			
+			ModelTelefone modelTelefone = new ModelTelefone();
+			
+			modelTelefone.setId(rs.getLong("id"));
+			modelTelefone.setNumero(rs.getString("numero"));
+			modelTelefone.setUsuario_cad_id(this.consultaUsuarioID(rs.getLong("usuario_cad_id")));
+			modelTelefone.setUsuario_pai_id(this.consultaUsuarioID(rs.getLong("usuario_pai_id")));
+			
+			retorno.add(modelTelefone);
+			
+		}
+		
+		return retorno;
 	}
 }
