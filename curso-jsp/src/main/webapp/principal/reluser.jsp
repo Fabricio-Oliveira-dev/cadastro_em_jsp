@@ -49,8 +49,8 @@
 															method="get" id="formUser">
 
 
-															<input type="hidden" name="acao"
-																value="imprimirRelatorioUser">
+															<input type="hidden" id="acaoRelatorioImprimirTipo"
+																name="acao" value="imprimirRelatorioUser">
 															<div class="form-row align-items-center">
 
 																<div class="col-sm-3 my-1">
@@ -66,8 +66,11 @@
 
 																</div>
 																<div class="col-auto my-1">
-																	<button type="submit" class="btn btn-primary mb-2">Imprimir
+																	<button type="button" onclick="imprimirHtml();"
+																		class="btn btn-primary mb-2">Imprimir
 																		Relatório</button>
+																	<button type="button" onclick="imprimirPdf();"
+																		class="btn btn-primary mb-2">Imprimir Pdf</button>
 																</div>
 															</div>
 
@@ -91,7 +94,8 @@
 																		<c:forEach items="${ml.telefones}" var="fone">
 																			<tr>
 																				<td />
-																				<td style="font-size: 10px;"><c:out value="${fone.numero}"></c:out></td>
+																				<td style="font-size: 10px;"><c:out
+																						value="${fone.numero}"></c:out></td>
 																			</tr>
 																		</c:forEach>
 
@@ -119,6 +123,16 @@
 	<jsp:include page="javascript-file.jsp"></jsp:include>
 
 	<script type="text/javascript">
+		function imprimirHtml() {
+			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioUser';
+			$("#formUser").submit();
+		}
+
+		function imprimirPdf() {
+			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioPDF';
+			$("#formUser").submit();
+			return false;
+		}
 		$(function() {
 
 			$("#dataInicial")
