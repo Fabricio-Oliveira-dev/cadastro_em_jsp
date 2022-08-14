@@ -1,8 +1,10 @@
 package servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
@@ -162,7 +164,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("dataFinal", dataFinal);
 				request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
 
-			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioPDF")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioPDF")
+					|| acao.equalsIgnoreCase("imprimirRelatorioExcel")) {
 
 				String dataInicial = request.getParameter("dataInicial");
 				String dataFinal = request.getParameter("dataFinal");
@@ -179,9 +182,23 @@ public class ServletUsuarioController extends ServletGenericUtil {
 							dataFinal);
 				}
 
-				byte[] relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "rel-user-jsp",request.getServletContext());
+				HashMap<String, Object> params = new HashMap<String, Object>();
+				params.put("PARAM_SUB_REPORT", request.getServletContext().getRealPath("relatorio") + File.separator);
 
-				response.setHeader("Content-Disposition", "attachment;filename=arquivo.pdf");
+				byte[] relatorio = null;
+				String extensal = "";
+
+				if (acao.equalsIgnoreCase("imprimirRelatorioPDF")) {
+					relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "rel-user-jsp", params, request.getServletContext());
+					extensal = "pdf";
+					
+				} else if (acao.equalsIgnoreCase("imprimirRelatorioExcel")) {
+					relatorio = new ReportUtil().geraRelatorioExcel(modelLogins, "rel-user-jsp", params,
+							request.getServletContext());
+					extensal = "xls";
+				}
+
+				response.setHeader("Content-Disposition", "attachment;filename=arquivo." + extensal);
 				response.getOutputStream().write(relatorio);
 
 			}
