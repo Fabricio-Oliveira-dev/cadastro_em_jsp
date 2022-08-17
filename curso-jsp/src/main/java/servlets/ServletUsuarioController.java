@@ -13,6 +13,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beanDTO.BeanDTOGraficoSalarioUser;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -105,7 +106,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
 
-				request.setAttribute("msg", "usuário em edição");
+				request.setAttribute("msg", "usuï¿½rio em ediï¿½ï¿½o");
 				request.setAttribute("modelLogin", modelLogin);
 				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
@@ -114,7 +115,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 
-				request.setAttribute("msg", "usuários carregados");
+				request.setAttribute("msg", "usuï¿½rios carregados");
 				request.setAttribute("modelLogins", modelLogins);
 				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
@@ -191,7 +192,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				if (acao.equalsIgnoreCase("imprimirRelatorioPDF")) {
 					relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "rel-user-jsp", params, request.getServletContext());
 					extensal = "pdf";
-					
+
 				} else if (acao.equalsIgnoreCase("imprimirRelatorioExcel")) {
 					relatorio = new ReportUtil().geraRelatorioExcel(modelLogins, "rel-user-jsp", params,
 							request.getServletContext());
@@ -200,6 +201,28 @@ public class ServletUsuarioController extends ServletGenericUtil {
 
 				response.setHeader("Content-Disposition", "attachment;filename=arquivo." + extensal);
 				response.getOutputStream().write(relatorio);
+
+			}
+
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("graficoSalario")) {
+
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+
+				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+
+					BeanDTOGraficoSalarioUser beanDTOGraficoSalarioUser = daoUsuarioRepository
+							.montarGraficoMediaSalario(super.getUserLogado(request));
+
+					ObjectMapper mapper = new ObjectMapper();
+
+					String json = mapper.writeValueAsString(beanDTOGraficoSalarioUser);
+
+					response.getWriter().write(json);
+
+				} else {
+					
+				}
 
 			}
 
@@ -223,7 +246,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 
 		try {
 
-			String msg = "Operação realizada com sucesso!";
+			String msg = "Operaï¿½ï¿½o realizada com sucesso!";
 
 			String id = request.getParameter("id");
 			String nome = request.getParameter("nome");
@@ -277,7 +300,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			}
 
 			if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
-				msg = "Já existe usuário com o mesmo login, informe outro login";
+				msg = "Jï¿½ existe usuï¿½rio com o mesmo login, informe outro login";
 			} else {
 
 				if (modelLogin.isNovo()) {
@@ -290,7 +313,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 																											// gravando
 																											// um novo
 																											// usuario o
-				// modelLogin seguirá o fluxo
+				// modelLogin seguirï¿½ o fluxo
 			}
 
 			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));

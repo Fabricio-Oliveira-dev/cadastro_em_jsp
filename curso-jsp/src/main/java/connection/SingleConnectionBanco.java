@@ -3,7 +3,7 @@ package connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class SingleConnectionBanco {/*Se fecha sessões e transações*/
+public class SingleConnectionBanco {/*Se fecha sessï¿½es e transaï¿½ï¿½es*/
 	
 	private static String banco = "jdbc:postgresql://localhost:5432/cursojsp?autoReconnect=true";
 	private static String user = "postgres";
@@ -20,7 +20,7 @@ public class SingleConnectionBanco {/*Se fecha sessões e transações*/
 		conectar();
 	}
 	
-	public SingleConnectionBanco() { /*quando tiver uma instância irá conectar*/
+	public SingleConnectionBanco() { /*quando tiver uma instï¿½ncia irï¿½ conectar*/
 		conectar();
 	}
 	
@@ -30,9 +30,9 @@ public class SingleConnectionBanco {/*Se fecha sessões e transações*/
 		try {
 			
 			if (connection == null) {
-				Class.forName("org.postgresql.Driver"); /*carrega o driver de conexão do banco*/
+				Class.forName("org.postgresql.Driver"); /*carrega o driver de conexï¿½o do banco*/
 				connection = DriverManager.getConnection(banco, user, senha);
-				connection.setAutoCommit(false); /*para não efetuar auterações no banco sem nosso comando*/
+				connection.setAutoCommit(false); /*para nï¿½o efetuar auteraï¿½ï¿½es no banco sem nosso comando*/
 			
 			
 			}
