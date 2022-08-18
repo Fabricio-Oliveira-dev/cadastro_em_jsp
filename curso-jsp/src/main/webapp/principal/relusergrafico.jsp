@@ -103,7 +103,9 @@
 
 	<script type="text/javascript">
 	
-	function gerarGrafico() {
+	var myChart = new Chart(document.getElementById('myChart'));
+	
+function gerarGrafico() {
 		
 	var urlAction = document.getElementById('formUser').action;
 	var dataInicial = document.getElementById('dataInicial').value;
@@ -118,7 +120,9 @@
 
 			var json = JSON.parse(response);
 			
-			var myChart = new Chart(document.getElementById('myChart'), 
+			myChart.destroy();
+			
+			myChart = new Chart(document.getElementById('myChart'), 
 			{
 				type : 'line',
 				data : {
@@ -135,13 +139,13 @@
 
 		}
 			
-		}
 
 	}).fail(
 			function(xhr, status, errorThrown) {
 				alert('Erro ao buscar dados para o gráfico:'
 						+ xhr.responseText);
 			});
+}
 	
 	
 		$(function() {

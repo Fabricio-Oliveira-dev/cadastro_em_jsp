@@ -23,9 +23,41 @@ public class DAOUsuarioRepository {
 
 	}
 
+	public BeanDTOGraficoSalarioUser montarGraficoMediaSalario(Long userLogado, String dataInicial, String dataFinal) throws Exception {
+		
+		String sql = "select avg(rendamensal) as media_salarial, perfil from model_login where usuario_id  = ? and datanascimento >= ? and datanascimento <= ? group by perfil";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
+		preparedStatement.setLong(1, userLogado);
+		preparedStatement.setDate(1, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
+		preparedStatement.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		List<String> perfils = new ArrayList<String>();
+		List<Double> salarios = new ArrayList<Double>();
+		
+		BeanDTOGraficoSalarioUser beanDTOGraficoSalarioUser = new BeanDTOGraficoSalarioUser();
+		
+		while (resultSet.next()) {
+			Double media_salarial = resultSet.getDouble("media_salarial");
+			String perfil = resultSet.getString("perfil");
+			
+			perfils.add(perfil);
+			salarios.add(media_salarial);
+		}
+		
+		beanDTOGraficoSalarioUser.setPerfils(perfils);
+		beanDTOGraficoSalarioUser.setSalarios(salarios);
+		
+		return beanDTOGraficoSalarioUser;
+		
+	}
+	
+	
 	public BeanDTOGraficoSalarioUser montarGraficoMediaSalario(Long userLogado) throws Exception {
 		
-		String sql = "select avg(rendamensal)  as media_salarial, perfil from model_login where usuario_id  = ? group by perfil";
+		String sql = "select avg(rendamensal) as media_salarial, perfil from model_login where usuario_id  = ? group by perfil";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		
 		preparedStatement.setLong(1, userLogado);
@@ -564,4 +596,6 @@ public List<ModelTelefone> listFone(Long idUserPai) throws Exception{
 		
 		return retorno;
 	}
+
+
 }
