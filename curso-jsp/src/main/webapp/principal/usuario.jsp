@@ -382,9 +382,13 @@
 	
 	var dataNascimento = $("#dataNascimento").val();
 	
-	var dateFormat = new Date(dataNascimento);
+	if (dataNascimento != null && dataNascimento != '') {
 	
-	$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR', {timeZone : 'UTC'}));
+		var dateFormat = new Date(dataNascimento);
+		
+		$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR', {timeZone : 'UTC'}));
+	
+	}
 	
 	$("#nome").focus();
 	
