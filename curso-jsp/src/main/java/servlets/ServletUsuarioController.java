@@ -339,6 +339,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			request.setAttribute("msg", e.getMessage());
 			redirecionar.forward(request, response);
 		}
+		System.out.println("teste");
 	}
 
 }
