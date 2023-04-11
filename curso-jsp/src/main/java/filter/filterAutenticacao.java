@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import connection.SingleConnectionBanco;
-import dao.DAOVersionadorBanco;
+import dao.DaoVersionadorBanco;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.RequestDispatcher;
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = { "/principal/*" }) /* intercepta todas as requisições que vierem do projeto */
+@WebFilter(urlPatterns = { "/principal/*" }) /* intercepta todas as requisiï¿½ï¿½es que vierem do projeto */
 public class filterAutenticacao extends HttpFilter {
 
 	private static Connection connection;
@@ -31,8 +31,8 @@ public class filterAutenticacao extends HttpFilter {
 		super();
 	}
 
-	/* encerra os processos quando o servidor é parado */
-	// mataria os processos de conexão com o banco
+	/* encerra os processos quando o servidor ï¿½ parado */
+	// mataria os processos de conexï¿½o com o banco
 	public void destroy() {
 		try {
 			connection.close();
@@ -41,7 +41,7 @@ public class filterAutenticacao extends HttpFilter {
 		}
 	}
 
-	/* intercepta todas as requsicições do projeto e dá as respostas */
+	/* intercepta todas as requsiciï¿½ï¿½es do projeto e dï¿½ as respostas */
 	/* tudo o que fizer no sistema vai fazer por aqui */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -51,25 +51,25 @@ public class filterAutenticacao extends HttpFilter {
 
 			String usuarioLogado = (String) session.getAttribute("usuario");
 
-			String urlParaAutenticar = req.getServletPath(); // url que está sendo acessada
+			String urlParaAutenticar = req.getServletPath(); // url que estï¿½ sendo acessada
 
-			/* validar se está logado, senão redireciona para a tela de login */
+			/* validar se estï¿½ logado, senï¿½o redireciona para a tela de login */
 
 			if (usuarioLogado == null || usuarioLogado.equals("null")
-					&& !urlParaAutenticar.equalsIgnoreCase("/principal/ServletLogin") /* não está logado */
+					&& !urlParaAutenticar.equalsIgnoreCase("/principal/ServletLogin") /* nï¿½o estï¿½ logado */
 			) {
 
 				RequestDispatcher redireciona = (RequestDispatcher) request
 						.getRequestDispatcher("/index.jsp?url=" + urlParaAutenticar);
 				request.setAttribute("msg", "Por favor, realize o login correto");
 				redireciona.forward(request, response);
-				return; // para a execução e redireciona para o login
+				return; // para a execuï¿½ï¿½o e redireciona para o login
 
 			} else {
 
 				chain.doFilter(request, response); // acima valida, chain deixa o processo continuar
 			}
-			connection.commit(); /*deu tudo certo? comita no banco as alterações*/
+			connection.commit(); /*deu tudo certo? comita no banco as alteraï¿½ï¿½es*/
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,11 +87,11 @@ public class filterAutenticacao extends HttpFilter {
 	}
 
 	/* executado quando o servidor sobe o projeto */
-	// iniciar a conexão com o banco
+	// iniciar a conexï¿½o com o banco
 	public void init(FilterConfig fConfig) throws ServletException {
 		connection = SingleConnectionBanco.getConnection();
 		
-		DAOVersionadorBanco daoVersionadorBanco = new DAOVersionadorBanco();
+		DaoVersionadorBanco daoVersionadorBanco = new DaoVersionadorBanco();
 		
 		String caminhoPastaSQL = fConfig.getServletContext().getRealPath("versionadorbancosql") + File.separator;
 		

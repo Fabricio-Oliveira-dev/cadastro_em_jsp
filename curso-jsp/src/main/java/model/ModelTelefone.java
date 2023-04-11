@@ -3,11 +3,12 @@ package model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ModelTelefone implements Serializable{
+public class ModelTelefone implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
+	
 	private String numero;
 	
 	private ModelLogin usuario_pai_id;
@@ -62,6 +63,4 @@ public class ModelTelefone implements Serializable{
 		ModelTelefone other = (ModelTelefone) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 }

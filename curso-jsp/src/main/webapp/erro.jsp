@@ -1,16 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Tela que mostra os erros</title>
 </head>
 <body>
+<h1>Mensagem de Erro, entre em contato com a equipe de suporte do sistema.</h1>
 
-<h1>Mensagem de erro, entre em contato com o suporte</h1>
-<%
-out.print(request.getAttribute("msg"));
+<% 
+ out.print(request.getAttribute("msg"));
 %>
 
 </body>

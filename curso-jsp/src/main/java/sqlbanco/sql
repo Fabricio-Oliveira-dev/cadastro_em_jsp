@@ -1,4 +1,4 @@
-CREATE DATABASE cursojsp
+CREATE DATABASE cadastro-jsp-servlets
   WITH OWNER = postgres
        ENCODING = 'UTF8'
        TABLESPACE = pg_default

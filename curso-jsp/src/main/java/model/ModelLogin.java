@@ -10,20 +10,23 @@ public class ModelLogin implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
+	
 	private String nome;
+	
 	private String email;
+	
 	private String login;
-	private String senha;
-
+	
+	private String senha;	
+	
+	private Date dataNascimento;
 	
 	private String sexo;
-
+	
 	private boolean useradmin;
-
-	private String perfil;
-
+	
 	private String fotouser;
-
+	
 	private String extensaofotouser;
 	
 	private String cep;
@@ -36,41 +39,36 @@ public class ModelLogin implements Serializable {
 	
 	private String uf;
 	
-	private String numero;	
-	
-	private Date dataNascimento;
+	private String numero;
 	
 	private Double rendamensal;
 	
-	private List<ModelTelefone> telefones = new ArrayList<ModelTelefone> ();
+	private List<ModelTelefone> telefones = new ArrayList<ModelTelefone>();
 	
-	private String MostraTelefoneRel;
-	
-
-	public List<ModelTelefone> getTelefones() {
-		return telefones;
-	}
-
 	public void setTelefones(List<ModelTelefone> telefones) {
 		this.telefones = telefones;
 	}
-
-	public Double getRendamensal() {
-		return rendamensal;
+	
+	public List<ModelTelefone> getTelefones() {
+		return telefones;
 	}
-
+	
 	public void setRendamensal(Double rendamensal) {
 		this.rendamensal = rendamensal;
 	}
-
-	public Date getDataNascimento() {
-		return dataNascimento;
+	
+	public Double getRendamensal() {
+		return rendamensal;
 	}
-
+	
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-
+	
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+	
 	public String getCep() {
 		return cep;
 	}
@@ -135,38 +133,40 @@ public class ModelLogin implements Serializable {
 		this.extensaofotouser = extensaofotouser;
 	}
 
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
 	public String getSexo() {
 		return sexo;
 	}
 
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
+	private String perfil;
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	public String getPerfil() {
 		return perfil;
 	}
 
-	public void setPerfil(String perfil) {
-		this.perfil = perfil;
+	public void setUseradmin(boolean useradmin) {
+		this.useradmin = useradmin;
 	}
 
 	public boolean getUseradmin() {
 		return useradmin;
 	}
 
-	public void setUseradmin(boolean useradmin) {
-		this.useradmin = useradmin;
-	}
-
 	public boolean isNovo() {
 
 		if (this.id == null) {
-			return true;/* inserir novo */
-		} else if (this.id != null & this.id > 0) {
-			return false; /* atualizar */
+			return true; /* Inserir novo */
+		} 
+		else if (this.id != null && this.id > 0) {
+			return false; /* Atualizar */
 		}
-
 		return id == null;
 	}
 
@@ -202,17 +202,17 @@ public class ModelLogin implements Serializable {
 		return senha;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
 	public String getLogin() {
 		return login;
 	}
 
-	public String getMostraTelefoneRel () {
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	
+	public String getMostraTelefoneRel() {
 		
-		String fone = "Telefone: \n\n";
+		String fone = "Telefone:\n\n";
 		
 		for (ModelTelefone modelTelefone : telefones) {
 			fone += modelTelefone.getNumero() + "\n";
