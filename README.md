@@ -1,5 +1,5 @@
 # Cadastro feito em JSP, Servlets e Bootstrap
-Esse é um cadastro básico utilizando as operações de banco de dados criar, consultar, atualizar e deletar. Há também o download de relatório em pdf utilizando o Jaspersoft Studio e Gráfico de linhas utilizando Google Charts.
+Esse é um cadastro básico utilizando as operações de banco de dados criar, consultar, atualizar e deletar utilizando o banco de dados PostgreSQL. Há também o download de relatório em pdf utilizando o Jaspersoft Studio e Gráfico de linhas utilizando Google Charts.
 
 # Tela de Login
 Esta é a tela de login, aonde é possível o usuário acessar com suas credenciais e caso alguma das duas informações (login e senha) estarem erradas, um erro é mostrado acima do título do cadastro conforme o segundo print.
