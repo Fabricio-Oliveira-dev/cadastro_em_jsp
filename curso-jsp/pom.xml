@@ -7,12 +7,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>curso-jsp</name>
-	<description>curso jsp jdev treinamento d</description>
-
+	<description>cadastro jsp-servlets</description>
 
 	<properties>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
 	</properties>
 
 	<dependencies>
@@ -22,7 +21,6 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.4.1212</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -58,7 +56,6 @@
 			<artifactId>commons-compress</artifactId>
 			<version>1.21</version>
 		</dependency>
-
 
 	</dependencies>
 	<build>
